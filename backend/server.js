@@ -20,8 +20,8 @@ app.use(morgan("tiny"));
 app.use(express.json());
 
 // ===== ROUTES ===== //
-app.get("/api/v1/", (req, res) => {
-	res.send("API is running");
+app.get("/api/v1", async (req, res) => {
+	res.send("API is running!");
 });
 
 // ===== ERRORS HANDLERS ===== //
