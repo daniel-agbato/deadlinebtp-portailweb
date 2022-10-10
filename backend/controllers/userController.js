@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const { StatusCodes } = require("http-status-codes");
-const _ = require("lodash");
 const asyncErrorHandler = require("express-async-handler"); // Pass all the catched errors to the custom error handler middleware
+const pickDataToReturn = require("../utils/pickDataToReturn");
 
 /**
  * Register a new user
@@ -9,7 +9,7 @@ const asyncErrorHandler = require("express-async-handler"); // Pass all the catc
  * @return user created data as a json object
  */
 const registerUser = asyncErrorHandler(async (req, res) => {
-	// retrieve the value sent with the request
+	// retrieve the values sent with the request
 	const { pseudo, nom, prenom, adresse, email, tel, password } = req.body;
 
 	// create a new user
@@ -19,7 +19,7 @@ const registerUser = asyncErrorHandler(async (req, res) => {
 	const token = await user.createNewToken();
 
 	// data to return
-	const data = _.pick(user, ["_id", "pseudo", "nom", "prenom", "adresse", "email", "tel", "createdAt"]);
+	const data = pickDataToReturn(user);
 
 	return res.status(StatusCodes.CREATED).json({ ...data, token });
 });
@@ -30,7 +30,7 @@ const registerUser = asyncErrorHandler(async (req, res) => {
  * @return user data as a json object
  */
 const authUser = asyncErrorHandler(async (req, res) => {
-	// retrieve the value sent with the request
+	// retrieve the values sent with the request
 	const { email, password } = req.body;
 
 	// check the credentials provided
@@ -56,9 +56,50 @@ const authUser = asyncErrorHandler(async (req, res) => {
 	const token = await user.createNewToken();
 
 	// data to return
-	const data = _.pick(user, ["_id", "pseudo", "nom", "prenom", "adresse", "email", "tel", "createdAt"]);
+	const data = pickDataToReturn(user);
 
 	return res.status(StatusCodes.OK).json({ ...data, token });
 });
 
-module.exports = { registerUser, authUser };
+/**
+ * update user profile
+ *
+ * @return updated user data as a json object
+ */
+const updateUserProfile = asyncErrorHandler(async (req, res) => {
+	// retrieve the values sent with the request
+	const { adresse, email } = req.body;
+
+	// get the user logged in from the request object
+	const user = req.user;
+
+	if (user) {
+		user.adresse = adresse || user.adresse;
+		user.email = email || user.email;
+
+		// we save the updated fields
+		const updatedUser = await user.save();
+
+		// data to return
+		const data = pickDataToReturn(updatedUser);
+
+		return res.status(StatusCodes.OK).json({ success: true, ...data });
+	} else {
+		throw new Error("User not found", StatusCodes.NOT_FOUND);
+	}
+});
+
+/**
+ * delete user profile/account
+ *
+ * @return success delete message as json object
+ */
+const deleteUserProfile = asyncErrorHandler(async (req, res) => {
+	// get the user logged in from the request object
+	const user = req.user;
+
+	await user.remove();
+	return res.status(StatusCodes.OK).json({ success: true, msg: "User account removed successfully" });
+});
+
+module.exports = { registerUser, authUser, updateUserProfile, deleteUserProfile };

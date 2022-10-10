@@ -10,7 +10,7 @@ const { StatusCodes } = require("http-status-codes");
  * @returns json object
  */
 const customErrorHandler = (err, req, res, next) => {
-	console.log(err);
+	//console.log(err);
 	let customErrorResponse = {
 		// default values
 		statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,

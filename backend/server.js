@@ -2,12 +2,12 @@
 require("dotenv").config();
 require("colors");
 const morgan = require("morgan");
+const customErrorHandler = require("./middlewares/errorHandlerMiddleware");
+const notFound = require("./middlewares/notFoundRouteMiddleware");
 
 // Initialize express app
 const express = require("express");
 const app = express();
-
-const customErrorHandler = require("./middlewares/errorHandlerMiddleware");
 
 // Connect the DB
 const connectDB = require("./config/mongo");
@@ -28,6 +28,7 @@ app.get("/api/v1", async (req, res) => {
 app.use("/api/v1/user", userRouter);
 
 // ===== ERRORS HANDLERS ===== //
+app.use(notFound);
 app.use(customErrorHandler);
 
 // ===== SERVER INITIALIZATION ===== //
