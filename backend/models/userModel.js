@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-// JWT HERE
+const jwt = require("jsonwebtoken");
 
 /* 
 User Model with the following properties:
@@ -57,7 +57,7 @@ const UserSchema = new mongoose.Schema(
 		password: {
 			type: String,
 			required: [true, "Please provide a password"],
-			minLength: 6,
+			minLength: [6, "Your password must be at least 6 characters"],
 		},
 	},
 	{ timestamps: true }
@@ -70,6 +70,11 @@ UserSchema.pre("save", async function (next) {
 });
 
 // ===== Here METHODS (they are attached to the Model and can be use on a new one initialized) ===== //
+UserSchema.methods.createNewToken = async function () {
+	return jwt.sign({ userId: this._id, pseudo: this.pseudo }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_LIFETIME,
+	});
+};
 
 const User = mongoose.model("User", UserSchema);
 

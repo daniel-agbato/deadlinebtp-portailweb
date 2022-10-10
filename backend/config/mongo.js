@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 /**
  * @desc Initialize the connection to the Database
  *
- * @params none
- * @return void
+ * @returns void
  */
 const connectDB = async () => {
 	try {
