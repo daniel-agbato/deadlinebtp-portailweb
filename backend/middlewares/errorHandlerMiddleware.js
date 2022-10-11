@@ -19,7 +19,7 @@ const customErrorHandler = (err, req, res, next) => {
 
 	// Check for duplicate/already use value
 	if (err.code && err.code === 11000) {
-		customErrorResponse.msg = `Duplicate value entered for ${Object.keys(err.keyValue)} field: '${Object.values(
+		customErrorResponse.msg = `${Object.keys(err.keyValue)} field: '${Object.values(
 			err.keyValue
 		)}' is already taken, please provide another value.`;
 		customErrorResponse.statusCode = StatusCodes.BAD_REQUEST;
@@ -36,7 +36,7 @@ const customErrorHandler = (err, req, res, next) => {
 	// We get the stack from the error when in development mode to display it
 	const stack = process.env.NODE_ENV !== "production" && err.stack;
 
-	return res.status(customErrorResponse.statusCode).json({ msg: customErrorResponse.msg, stack });
+	return res.status(customErrorResponse.statusCode).json({ success: false, msg: customErrorResponse.msg, stack });
 };
 
 module.exports = customErrorHandler;
