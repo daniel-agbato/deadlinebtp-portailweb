@@ -10,10 +10,10 @@ const pickDataToReturn = require("../utils/pickDataToReturn");
  */
 const registerUser = asyncErrorHandler(async (req, res) => {
 	// retrieve the values sent with the request
-	const { pseudo, nom, prenom, adresse, email, tel, password } = req.body;
+	const { pseudo, lastname, firstname, address, email, phone, password } = req.body;
 
 	// create a new user
-	const user = await User.create({ pseudo, nom, prenom, adresse, email, tel, password });
+	const user = await User.create({ pseudo, lastname, firstname, address, email, phone, password });
 
 	// We generate a new token
 	const token = await user.createNewToken();
@@ -21,7 +21,7 @@ const registerUser = asyncErrorHandler(async (req, res) => {
 	// data to return
 	const data = pickDataToReturn(user);
 
-	return res.status(StatusCodes.CREATED).json({ ...data, token });
+	return res.status(StatusCodes.CREATED).json({ success: true, results: { ...data, token } });
 });
 
 /**
@@ -58,7 +58,7 @@ const authUser = asyncErrorHandler(async (req, res) => {
 	// data to return
 	const data = pickDataToReturn(user);
 
-	return res.status(StatusCodes.OK).json({ ...data, token });
+	return res.status(StatusCodes.OK).json({ success: true, results: { ...data, token } });
 });
 
 /**
@@ -68,13 +68,13 @@ const authUser = asyncErrorHandler(async (req, res) => {
  */
 const updateUserProfile = asyncErrorHandler(async (req, res) => {
 	// retrieve the values sent with the request
-	const { adresse, email } = req.body;
+	const { address, email } = req.body;
 
 	// get the user logged in from the request object
 	const user = req.user;
 
 	if (user) {
-		user.adresse = adresse || user.adresse;
+		user.address = address || user.address;
 		user.email = email || user.email;
 
 		// we save the updated fields
