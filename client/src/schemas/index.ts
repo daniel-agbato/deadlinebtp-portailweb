@@ -1,5 +1,7 @@
 import * as Yup from "yup";
 
+/* ===== Yup validation schemas for Formik form ===== */
+
 export const signUpSchema = Yup.object({
 	pseudo: Yup.string()
 		.min(2, "Pseudo is too short: 2 characters min")
@@ -27,4 +29,12 @@ export const signUpSchema = Yup.object({
 export const signInSchema = Yup.object({
 	email: Yup.string().email("Email invalid").required(),
 	password: Yup.string().min(6, "Password must be at least 6 characters").required(),
+});
+
+export const editProfileSchema = Yup.object({
+	address: Yup.string()
+		.min(2, "Address is too short: 2 characters min")
+		.max(255, "Address is too long: 255 characters max")
+		.required(),
+	email: Yup.string().email("Email invalid").required(),
 });

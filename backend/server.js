@@ -1,6 +1,7 @@
 // dotenv allow to use .env variables through all the files
 require("dotenv").config();
 require("colors");
+const cors = require("cors");
 const morgan = require("morgan");
 const customErrorHandler = require("./middlewares/errorHandlerMiddleware");
 const notFound = require("./middlewares/notFoundRouteMiddleware");
@@ -13,12 +14,13 @@ const app = express();
 const connectDB = require("./config/mongo");
 connectDB();
 
-// ===== ROUTERS ===== //
-const userRouter = require("./routes/userRoutes");
-
 // ===== MIDDLEWARES ===== //
 app.use(morgan("tiny"));
 app.use(express.json());
+app.use(cors());
+
+// ===== ROUTERS ===== //
+const userRouter = require("./routes/userRoutes");
 
 // ===== ROUTES ===== //
 app.get("/api/v1", async (req, res) => {
