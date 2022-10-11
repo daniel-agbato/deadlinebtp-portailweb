@@ -7,51 +7,49 @@ import FormContainer from "../containers/FormContainer";
 import Layout from "../containers/Layout";
 import { useCurrentUser } from "../context/currentUserContext";
 import { signUpSchema } from "../schemas";
-import { registerNewUser } from "../services/userService";
-
-interface SignUpFormValues {
-	pseudo: string;
-	lastname: string;
-	firstname: string;
-	address: string;
-	email: string;
-	phone: string;
-	password: string;
-}
+import { RegisterUserCredentials } from "../types";
 
 function SignUp() {
-	const [error, setError] = useState(false);
-	const navigate = useNavigate();
+	const [error, setError] = useState("");
 	const userCtx = useCurrentUser();
+	const navigate = useNavigate();
 
-	const onSubmit = async (values: SignUpFormValues, actions: any) => {
-		const response = await registerNewUser(values);
-		if (!response.success) {
-			setError(response.msg);
-		} else {
-			actions.resetForm();
-			// HERE ADD TO LOCAL STORAGE
-			userCtx?.defineCurrentUser(response.results);
-			navigate("/profile");
+	// Formik Form submit handler
+	const onSubmit = async (values: RegisterUserCredentials, actions: any) => {
+		const response = await userCtx?.createUserAccount(values);
+		if (response) {
+			if (response.success) {
+				navigate("/profile");
+			} else {
+				setError(response.msg);
+				actions.resetForm();
+			}
 		}
 	};
+
+	// Formik initial values
+	const initialValues: RegisterUserCredentials = {
+		pseudo: "",
+		lastname: "",
+		firstname: "",
+		address: "",
+		email: "",
+		phone: "",
+		password: "",
+	};
+
 	return (
 		<Layout>
 			<FormContainer>
-				<Formik
-					initialValues={{
-						pseudo: "",
-						lastname: "",
-						firstname: "",
-						address: "",
-						email: "",
-						phone: "",
-						password: "",
-					}}
-					validationSchema={signUpSchema}
-					onSubmit={onSubmit}>
+				<Formik initialValues={initialValues} validationSchema={signUpSchema} onSubmit={onSubmit}>
 					<VStack as={Form} w="full" justify="center" spacing="4">
 						<Heading>Create an account</Heading>
+						<Text fontSize="xs">
+							Already have an account?{" "}
+							<Button variant="link" as={Link} to="/signin" textDecoration="underline" size="xs">
+								login here
+							</Button>
+						</Text>
 						{error && (
 							<Alert status="error">
 								<AlertIcon /> {error}
@@ -62,17 +60,16 @@ function SignUp() {
 						<TextField label="Firstname" name="firstname" placeholder="Enter your firstname" />
 						<TextField label="Address" name="address" placeholder="Enter your address" />
 						<TextField type="email" label="Email" name="email" placeholder="Enter your email" />
-						<TextField label="Phone number" name="phone" placeholder="Enter your phone number" />
+						<TextField
+							label="Phone number"
+							name="phone"
+							placeholder="Enter your phone number"
+							helperText="Enter a French like phone number. ex: 0123456789"
+						/>
 						<TextField type="password" label="Password" name="password" placeholder="Enter your password" />
-						<Button colorScheme="blue" type="submit" size="lg" borderRadius="0">
+						<Button colorScheme="blue" type="submit" size="lg" borderRadius="2">
 							Sign Up
 						</Button>
-						<Text fontSize="xs">
-							Already have an account?{" "}
-							<Button variant="link" as={Link} to="/signin" textDecoration="underline" size="xs">
-								log in here
-							</Button>
-						</Text>
 					</VStack>
 				</Formik>
 			</FormContainer>

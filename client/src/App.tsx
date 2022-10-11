@@ -7,7 +7,10 @@ import SignUp from "./pages/SignUp";
 
 function App() {
 	const userCtx = useCurrentUser();
-	const user = userCtx?.currentUser;
+	const user = userCtx?.currentUser; // retrieve the current user logged in if there is one
+
+	// Profile page can be accessed only when logged in, otherwise it redirects to signin page
+	// If already logged in, automatically redirect to profile page
 	return (
 		<Routes>
 			<Route path="/" element={<Home />} />

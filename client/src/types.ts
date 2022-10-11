@@ -24,3 +24,14 @@ export interface LoginUserCredentials {
 	email: string;
 	password: string;
 }
+
+export interface EditUserCredentials {
+	address: string;
+	email: string;
+}
+
+export interface APIResponseType {
+	success: boolean;
+	results: UserInfoObj;
+	msg: string;
+}

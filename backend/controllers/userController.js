@@ -83,7 +83,7 @@ const updateUserProfile = asyncErrorHandler(async (req, res) => {
 		// data to return
 		const data = pickDataToReturn(updatedUser);
 
-		return res.status(StatusCodes.OK).json({ success: true, ...data });
+		return res.status(StatusCodes.OK).json({ success: true, results: { ...data } });
 	} else {
 		throw new Error("User not found", StatusCodes.NOT_FOUND);
 	}

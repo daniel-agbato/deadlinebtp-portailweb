@@ -12,8 +12,8 @@ root.render(
 	<React.StrictMode>
 		<Router>
 			<ChakraProvider resetCSS>
-				<ColorModeScript initialColorMode="dark" />
 				<CurrentUserProvider>
+					<ColorModeScript initialColorMode="dark" />
 					<App />
 				</CurrentUserProvider>
 			</ChakraProvider>
