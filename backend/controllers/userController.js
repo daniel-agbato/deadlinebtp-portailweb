@@ -6,7 +6,7 @@ const pickDataToReturn = require("../utils/pickDataToReturn");
 /**
  * Register a new user
  *
- * @return user created data as a json object
+ * @returns  user created data as a json object
  */
 const registerUser = asyncErrorHandler(async (req, res) => {
 	// retrieve the values sent with the request
@@ -27,7 +27,7 @@ const registerUser = asyncErrorHandler(async (req, res) => {
 /**
  * Login user
  *
- * @return user data as a json object
+ * @returns user data as a json object
  */
 const authUser = asyncErrorHandler(async (req, res) => {
 	// retrieve the values sent with the request
@@ -64,7 +64,7 @@ const authUser = asyncErrorHandler(async (req, res) => {
 /**
  * update user profile
  *
- * @return updated user data as a json object
+ * @returns updated user data as a json object
  */
 const updateUserProfile = asyncErrorHandler(async (req, res) => {
 	// retrieve the values sent with the request
@@ -90,16 +90,16 @@ const updateUserProfile = asyncErrorHandler(async (req, res) => {
 });
 
 /**
- * delete user profile/account
+ * delete current logged in user profile/account
  *
- * @return success delete message as json object
+ * @returns success delete message as json object
  */
 const deleteUserProfile = asyncErrorHandler(async (req, res) => {
 	// get the user logged in from the request object
 	const user = req.user;
 
 	await user.remove();
-	return res.status(StatusCodes.OK).json({ success: true, msg: "User account removed successfully" });
+	return res.status(StatusCodes.OK).json({ success: true, msg: "User account successfully removed" });
 });
 
 module.exports = { registerUser, authUser, updateUserProfile, deleteUserProfile };
