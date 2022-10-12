@@ -1,4 +1,4 @@
-import { Tooltip, Flex, Heading, HStack, IconButton, Stack, Container, Box } from "@chakra-ui/react";
+import { Tooltip, Flex, Heading, HStack, IconButton, Stack, Container, Box, Button } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { MdLogout } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -19,6 +19,9 @@ function Layout({ children }: { children: ReactNode }) {
 							DeadlineBTP
 						</Heading>
 						<HStack>
+							<Button as={Link} to="/api/v1/docs" size="sm">
+								Docs
+							</Button>
 							<ToggleColorMode />
 							{userCtx?.currentUser && (
 								<Tooltip label="Logout">
