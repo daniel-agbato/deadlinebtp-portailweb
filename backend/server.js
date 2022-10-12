@@ -17,7 +17,7 @@ const connectDB = require("./config/mongo");
 connectDB();
 
 // ===== MIDDLEWARES ===== //
-app.use(morgan("tiny"));
+if (process.env.NODE_ENV === "development") app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cors());
 
@@ -33,7 +33,7 @@ app.use("/api/v1/user", userRouter);
 // Generate documentation with swagger
 swaggerDocs(app);
 
-// ===== APP CONFIGURATION ===== //
+// ===== APP PRODUCTION CONFIGURATION ===== //
 const __root_dirname = path.resolve();
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(__root_dirname + "/client/build"));
