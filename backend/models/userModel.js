@@ -78,12 +78,22 @@ UserSchema.pre("save", async function (next) {
 });
 
 // ===== Here METHODS (they are attached to the Model and can be use on a new one initialized) ===== //
+
+/**
+ * Generate a token
+ * @returns jwt token
+ */
 UserSchema.methods.createNewToken = async function () {
 	return jwt.sign({ userId: this._id, pseudo: this.pseudo }, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_LIFETIME,
 	});
 };
 
+/**
+ *Check if the password is correct
+ * @param {string} candidatePassword
+ * @returns boolean
+ */
 UserSchema.methods.comparePassword = async function (candidatePassword) {
 	const isMatch = await bcrypt.compare(candidatePassword, this.password);
 	return isMatch;

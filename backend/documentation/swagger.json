@@ -1,0 +1,406 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "DeadlineBTP REST API Docs",
+		"description": "This is a simple REST API for Deadline BTP by Daniel AGBATO. It handle basic user operations (register, login, edit, delete)."
+	},
+	"tags": [
+		{
+			"name": "User",
+			"description": "API for user in the system"
+		}
+	],
+	"components": {
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		},
+		"schemas": {
+			"ErrorResponse": {
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"example": "false"
+					},
+					"msg": {
+						"type": "string",
+						"example": "Something went wrong"
+					}
+				}
+			},
+			"UserRegistration": {
+				"type": "object",
+				"properties": {
+					"pseudo": {
+						"type": "string",
+						"example": "JhonDoe75"
+					},
+					"lastname": {
+						"type": "string",
+						"example": "Doe"
+					},
+					"firstname": {
+						"type": "string",
+						"example": "Jhon"
+					},
+					"address": {
+						"type": "string",
+						"example": "5 rue rivoli, 75004, Paris"
+					},
+					"email": {
+						"type": "string",
+						"example": "jhondoe@example.com"
+					},
+					"phone": {
+						"type": "string",
+						"example": "0123456789"
+					},
+					"password": {
+						"type": "string",
+						"example": "thisisapassword75"
+					}
+				}
+			},
+			"UserData": {
+				"type": "object",
+				"properties": {
+					"_id": {
+						"type": "string",
+						"example": "63454cfbd5dbe43f5274358a"
+					},
+					"pseudo": {
+						"type": "string",
+						"example": "JhonDoe75"
+					},
+					"lastname": {
+						"type": "string",
+						"example": "Doe"
+					},
+					"firstname": {
+						"type": "string",
+						"example": "Jhon"
+					},
+					"address": {
+						"type": "string",
+						"example": "5 rue rivoli, 75004, Paris"
+					},
+					"email": {
+						"type": "string",
+						"example": "jhondoe@example.com"
+					},
+					"phone": {
+						"type": "string",
+						"example": "0123456789"
+					},
+					"createdAt": {
+						"type": "string",
+						"example": "2022-10-10T16:48:59.402Z"
+					}
+				}
+			},
+			"UserDataWithToken": {
+				"type": "object",
+				"properties": {
+					"_id": {
+						"type": "string",
+						"example": "63454cfbd5dbe43f5274358a"
+					},
+					"pseudo": {
+						"type": "string",
+						"example": "JhonDoe75"
+					},
+					"lastname": {
+						"type": "string",
+						"example": "Doe"
+					},
+					"firstname": {
+						"type": "string",
+						"example": "Jhon"
+					},
+					"address": {
+						"type": "string",
+						"example": "5 rue rivoli, 75004, Paris"
+					},
+					"email": {
+						"type": "string",
+						"example": "jhondoe@example.com"
+					},
+					"phone": {
+						"type": "string",
+						"example": "0123456789"
+					},
+					"createdAt": {
+						"type": "string",
+						"example": "2022-10-10T16:48:59.402Z"
+					},
+					"token": {
+						"type": "string",
+						"example": "a jwt generated token"
+					}
+				}
+			}
+		}
+	},
+	"security": {
+		"bearerAuth": []
+	},
+	"schemes": ["http"],
+	"consumes": ["application/json"],
+	"paths": {
+		"/api/v1/user/register": {
+			"post": {
+				"tags": ["User"],
+				"summary": "Create new user in system",
+				"produces": ["application/json"],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserRegistration"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "User successfully created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": "true"
+										},
+										"results": {
+											"type": "object",
+											"$ref": "#/components/schemas/UserDataWithToken"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/user/login": {
+			"post": {
+				"tags": ["User"],
+				"summary": "Log user to system",
+				"produces": ["application/json"],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "strin",
+										"example": "jhondoe@example.com"
+									},
+									"password": {
+										"type": "string",
+										"example": "thisisapassword75"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "User successfully logged in",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": "true"
+										},
+										"results": {
+											"type": "object",
+											"$ref": "#/components/schemas/UserDataWithToken"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/user/profile": {
+			"patch": {
+				"security": {
+					"bearerAuth": []
+				},
+				"tags": ["User"],
+				"summary": "Edit user data in the database",
+				"produces": ["application/json"],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"address": {
+										"type": "strin",
+										"example": "17 rue rivoli, 75004, Paris"
+									},
+									"email": {
+										"type": "string",
+										"example": "jhondoe+1@example.com"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "User data successfully edited",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": "true"
+										},
+										"results": {
+											"type": "object",
+											"$ref": "#/components/schemas/UserData"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"security": {
+					"bearerAuth": []
+				},
+				"tags": ["User"],
+				"summary": "Remove user from the system and database",
+				"produces": ["application/json"],
+				"responses": {
+					"200": {
+						"description": "User successfully removed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": "true"
+										},
+										"msg": {
+											"type": "string",
+											"example": "User account successfully removed"
+										}
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
