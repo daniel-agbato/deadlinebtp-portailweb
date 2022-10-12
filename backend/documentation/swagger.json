@@ -71,7 +71,7 @@
 				"properties": {
 					"_id": {
 						"type": "string",
-						"example": "63454cfbd5dbe43f5274358a"
+						"example": "mongoDB generated id"
 					},
 					"pseudo": {
 						"type": "string",
@@ -108,7 +108,7 @@
 				"properties": {
 					"_id": {
 						"type": "string",
-						"example": "63454cfbd5dbe43f5274358a"
+						"example": "mongoDB generated id"
 					},
 					"pseudo": {
 						"type": "string",

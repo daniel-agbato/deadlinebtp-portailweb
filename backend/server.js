@@ -37,6 +37,11 @@ swaggerDocs(app);
 const __root_dirname = path.resolve();
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(__root_dirname + "/client/build"));
+
+	// We send the front index.html page for all the others routes requests, otherwise it will be a notFound Error
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+	});
 }
 
 // ===== ERRORS HANDLERS ===== //
