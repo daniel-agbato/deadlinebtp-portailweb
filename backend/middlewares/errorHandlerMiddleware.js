@@ -34,7 +34,7 @@ const customErrorHandler = (err, req, res, next) => {
 	}
 
 	// We get the stack from the error when in development mode to display it
-	const stack = process.env.NODE_ENV !== "production" && err.stack;
+	const stack = process.env.NODE_ENV !== "production" ? err.stack : null;
 
 	return res.status(customErrorResponse.statusCode).json({ success: false, msg: customErrorResponse.msg, stack });
 };

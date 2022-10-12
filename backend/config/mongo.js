@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 /**
- * @desc Initialize the connection to the Database
+ * Initialize the connection to the Database
  *
- * @return void
+ * @returns void
  */
 const connectDB = async () => {
 	try {
