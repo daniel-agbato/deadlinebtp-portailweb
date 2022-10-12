@@ -37,9 +37,6 @@ swaggerDocs(app);
 const __root_dirname = path.resolve();
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(__root_dirname + "/client/build"));
-	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-	});
 }
 
 // ===== ERRORS HANDLERS ===== //
